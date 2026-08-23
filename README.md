@@ -112,3 +112,7 @@ All commands above read `configs/default.yaml` by default (target FPS, resize, d
 - Save clips only on alerts and define retention/deletion rules.
 - Restrict dashboard access and log reviews.
 - A real deployment needs a dedicated privacy and legal assessment plus clear CCTV notices.
+
+
+#DataSet we have currently 
+https://www.kaggle.com/datasets/kipshidze/shoplifting-video-dataset 

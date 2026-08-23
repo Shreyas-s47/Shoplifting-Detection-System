@@ -1,0 +1,21 @@
+# Large or sensitive data and generated ML artifacts
+data/external/
+data/raw/
+data/keypoints/
+artifacts/
+*.onnx
+*.pt
+*.pth
+*.mp4
+*.avi
+
+# Downloaded dataset archives (see Dataset policy in README.md)
+UCF_Crimes-Train-Test-Split.zip
+
+# Python environment and caches
+.venv/
+__pycache__/
+*.py[cod]
+
+# Local tool state
+.claude/

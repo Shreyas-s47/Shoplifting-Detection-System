@@ -1,0 +1,5 @@
+opencv-python>=4.10,<5
+PyYAML>=6.0,<7
+pytest>=8.0,<9
+ultralytics>=8.3,<9
+psutil>=6.0,<8

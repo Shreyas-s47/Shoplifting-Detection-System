@@ -1,0 +1,21 @@
+video:
+  target_fps: 15.0
+  resize_width: 640
+  resize_height: 360
+  supported_extensions:
+    - .mp4
+    - .avi
+    - .mov
+    - .mkv
+
+data:
+  raw_root: data
+  manifest_path: data/manifests/clips.csv
+
+pose_tracking:
+  model_path: yolov8n-pose.pt
+  device: "0" # RTX 4050 laptop GPU; override with --device cpu if no CUDA GPU is available
+  confidence: 0.35
+  iou_threshold: 0.5
+  image_size: 640
+  tracker: bytetrack.yaml

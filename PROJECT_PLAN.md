@@ -105,7 +105,7 @@ feedback log -> threshold tuning and retraining
 | DCSASS | UCF-Crime-derived short clips, incl. shoplifting | clip-level | extra training clips | **~1–3 GB** (to verify on Kaggle) | Kaggle |
 | MNNIT Allahabad shoplifting (India) | normal vs concealment, 640x480 @30 FPS | clip-level | **Indian-context train/test** | unknown, est. **1–5 GB** (verify before download) | Mendeley, CC BY 4.0 |
 | Simuletic CCTV sample | synthetic skeleton + video, normal/theft | sequence | augmentation / sanity | **< 1 GB** (open sample) | Kaggle; full set is paid |
-| RetailS | multi-day, 6-camera real retail store, pose | frame-level | best real-world benchmark | unknown | **Email the authors** for access |
+| RetailS | 10 days, 6 cameras, one US store; pose only (COCO-17); ~20M normal frames, 53 real + 898 staged theft incidents in test | frame-level (test) | adaptation + best real-world benchmark | unknown (single Drive zip) | Public Drive link in https://github.com/TeCSAR-UNCC/RetailS ; paper IEEE IoT Journal / arXiv 2603.04723 |
 | Own staged clips (India) | 30–100 consented clips in a shop or mock aisle | frame-level (CVAT) | **held-out Indian test** | ~2–5 GB raw | own |
 | Unlabelled retail footage | public store walkthroughs / CCTV | none | VLM pseudo-labelling, anomaly pretraining | ~10–30 GB (capped) | must respect licences |
 
@@ -278,7 +278,7 @@ tests/
 | Risk | Mitigation |
 |---|---|
 | Datasets are small and staged | Cross-dataset training, augmentation, VLM pseudo-labels, per-store adaptation |
-| PoseLift / RetailS access blocked | Proceed with other sets; email authors; PoseLift requires fixed Drive permissions |
+| PoseLift Drive pose files blocked | Download manually in a browser or email nrashvan@charlotte.edu; proceed with other sets meanwhile |
 | 6 GB VRAM limits | Frozen backbones, cached embeddings, 4-bit VLMs, small batches, Colab/Kaggle for big jobs |
 | VLM hallucination | VLM is a verifier only; structured output; measured precision; a human always reviews |
 | False alerts in crowded stores | Stage-sequence logic, smoothing, cooldown, per-camera thresholds by target alerts/hour |

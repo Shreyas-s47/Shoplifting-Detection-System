@@ -321,6 +321,8 @@ tests/
 - 2026-10-14: PoseLift test set (47 clips) == RetailS real-world test set (32/47 byte-identical, rest smoothed variants); treat as ONE held-out real-world set, never train on one and test on the other.
 - 2026-10-14: First cross-dataset results (logistic / random forest on aggregated windows, cluster-bootstrap 95% CI): RetailS staged+normals -> RetailS real ROC 0.51 / 0.60; Kaggle -> RetailS real 0.49 / 0.57; Kaggle -> Kaggle test 0.79 / 0.82; leave-one-camera-out (staged+normals) 0.53-0.90. Conclusion: the current features/models do NOT transfer across domains; within-Kaggle scores overstate real-world ability.
 - 2026-10-14: Fixed feature bugs: NaN joints in PoseLift handled as missing; wrist acceleration (max ~3e4) is now log1p-compressed.
+- 2026-10-14: Normal-behaviour GRU autoencoder (trained on 22.8k normal windows, 25 epochs, GPU ~40 s) is at chance on real incidents: ROC 0.49 [0.34-0.65] raw, 0.49 camera-calibrated; staged+held-out normals ROC 0.56. Reconstruction error does not capture concealment. Published STG-NF reaches ~67 AUROC (frame-level) on PoseLift, so pose-only anomaly scoring is a hard ceiling, not just a tuning gap.
+- 2026-10-14: Constraint: RetailS/PoseLift ship pose only (no pixels). Visual hand-region and VLM tiers cannot be trained or tested on them; they must be validated on video datasets (Kaggle/MNNIT clips, UCF-Crime Shoplifting real CCTV, Simuletic).
 - 2026-10-14: Hardware is no longer restricted to CPU; real-time on a single GPU is the target.
 
 ---

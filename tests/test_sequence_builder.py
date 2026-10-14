@@ -79,3 +79,22 @@ def test_dataset_builder(tmp_path: Path):
 
     assert (output_dir / "X_train.npy").exists() or (output_dir / "X_test.npy").exists() or (output_dir / "X_val.npy").exists()
     assert (output_dir / "dataset_summary.json").exists()
+
+
+def test_duplicate_videos_share_a_split(tmp_path):
+    import pandas as pd
+
+    from features.sequence_builder import _duplicate_groups
+
+    a = tmp_path / "a.mp4"
+    b = tmp_path / "b.mp4"
+    c = tmp_path / "c.mp4"
+    a.write_bytes(b"same")
+    b.write_bytes(b"same")
+    c.write_bytes(b"other")
+    df = pd.DataFrame(
+        {"clip_id": ["a", "b", "c"], "source_path": [str(a), str(b), str(c)]}
+    )
+    groups = _duplicate_groups(df)
+    assert groups[0] == groups[1]
+    assert groups[0] != groups[2]

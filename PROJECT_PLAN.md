@@ -302,7 +302,7 @@ tests/
 | Phase | Status | Date | Notes |
 |---|---|---|---|
 | Merge friend's Modules 3–4 | Done | 2026-10-14 | 18/18 tests pass; checkpoint reproduces ROC-AUC 0.765 |
-| 0 Foundation | Not started | | |
+| 0 Foundation | In progress | 2026-10-14 | Done: dedupe + label-stratified grouped split, validation-only threshold, early stopping. Left: grouped k-fold CV, CIs, results harness. MNNIT == Kaggle set (182/182 identical); 3 duplicate clips found. Datasets downloaded: PoseLift (full), RetailS, Simuletic in data/external/ |
 | 1 Data engine | Not started | | |
 | 2 Perception | Not started | | |
 | 3 Behaviour models | Not started | | |
@@ -317,6 +317,7 @@ tests/
 - 2026-10-14: `FINAL_PROJECT_REPORT.md` declared non-authoritative; ignore it.
 - 2026-10-14: Logistic/RF baseline beats the GRU on the current split, so model complexity is treated as unproven until Phase 0 CV.
 - 2026-10-14: Architecture changed from pose-only GRU to a 3-tier cascade (pose + hand-region visual + anomaly, gated VLM verifier).
+- 2026-10-14: MNNIT is a byte-identical copy of the Kaggle set; Kaggle manifest had 3 duplicate clips, now grouped by MD5 in splits. Honest single-split baseline (test, val-chosen threshold): logistic ROC-AUC 0.80, GRU 0.77, LSTM 0.77.
 - 2026-10-14: Hardware is no longer restricted to CPU; real-time on a single GPU is the target.
 
 ---

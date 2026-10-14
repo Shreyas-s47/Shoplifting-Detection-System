@@ -177,6 +177,21 @@ def extract_features_for_clip(
     return X, y, all_meta
 
 
+def _duplicate_groups(manifest_df: pd.DataFrame) -> list[str]:
+    """Group id per manifest row: MD5 of the video file when readable, else the clip id."""
+    import hashlib
+
+    groups = []
+    for _, row in manifest_df.iterrows():
+        group = str(row["clip_id"])
+        src = row.get("source_path")
+        if isinstance(src, str) and os.path.exists(src):
+            with open(src, "rb") as fh:
+                group = hashlib.md5(fh.read()).hexdigest()
+        groups.append(group)
+    return groups
+
+
 def build_sequence_dataset(
     keypoints_dir: str | Path = "data/keypoints",
     manifest_path: str | Path = "data/manifests/clips.csv",
@@ -202,18 +217,27 @@ def build_sequence_dataset(
     label_map = {"shoplifting": 1, "normal": 0, "1": 1, "0": 0}
     manifest_df["binary_label"] = manifest_df["label"].astype(str).str.lower().map(label_map)
 
-    # 2. Split clips deterministically
-    np.random.seed(seed)
-    clips = manifest_df[["clip_id", "binary_label"]].drop_duplicates().to_dict("records")
-    np.random.shuffle(clips)
+    # 2. Split deterministically, stratified by label, grouping byte-identical clips
+    #    so that duplicate videos can never straddle train/val/test.
+    manifest_df["group_id"] = _duplicate_groups(manifest_df)
+    rng = np.random.RandomState(seed)
+    group_label = (
+        manifest_df.drop_duplicates("group_id").set_index("group_id")["binary_label"].to_dict()
+    )
+    test_groups: set = set()
+    val_groups: set = set()
+    for lab in sorted(set(group_label.values())):
+        groups = sorted(g for g, l in group_label.items() if l == lab)
+        rng.shuffle(groups)
+        n_test = max(1, int(len(groups) * test_ratio))
+        n_val = max(1, int(len(groups) * val_ratio))
+        test_groups.update(groups[:n_test])
+        val_groups.update(groups[n_test : n_test + n_val])
 
-    n_total = len(clips)
-    n_val = max(1, int(n_total * val_ratio))
-    n_test = max(1, int(n_total * test_ratio))
-
-    test_clips = set(c["clip_id"] for c in clips[:n_test])
-    val_clips = set(c["clip_id"] for c in clips[n_test : n_test + n_val])
-    train_clips = set(c["clip_id"] for c in clips[n_test + n_val :])
+    clip_group = dict(zip(manifest_df["clip_id"].astype(str), manifest_df["group_id"]))
+    test_clips = {c for c, g in clip_group.items() if g in test_groups}
+    val_clips = {c for c, g in clip_group.items() if g in val_groups}
+    train_clips = set(clip_group) - test_clips - val_clips
 
     splits = {"train": (train_clips, [], [], []), "val": (val_clips, [], [], []), "test": (test_clips, [], [], [])}
 

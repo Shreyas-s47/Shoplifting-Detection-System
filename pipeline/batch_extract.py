@@ -54,7 +54,7 @@ def run_batch(
     for index, row in enumerate(rows, start=1):
         clip_id = row["clip_id"]
         output_path = keypoints_dir / f"{clip_id}.jsonl"
-        if skip_existing and output_path.exists():
+        if skip_existing and output_path.exists() and output_path.stat().st_size > 0:
             print(f"[{index}/{len(rows)}] skip {clip_id} (already extracted)", flush=True)
             continue
 

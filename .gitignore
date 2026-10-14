@@ -2,9 +2,14 @@
 data/external/
 data/raw/
 data/keypoints/
-artifacts/
+data/features/
+data/normal/
+data/shoplifting/
+artifacts/*
+!artifacts/models/
 *.onnx
 *.pt
+!artifacts/models/best_model.pt
 *.pth
 *.mp4
 *.avi
@@ -19,3 +24,11 @@ __pycache__/
 
 # Local tool state
 .claude/
+
+# Friend's copy kept locally for reference only
+updated project to copy/
+
+# Local drafts / non-authoritative documents
+report files/
+FINAL_PROJECT_REPORT.md
+walkthrough.md

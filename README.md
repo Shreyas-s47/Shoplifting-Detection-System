@@ -69,7 +69,7 @@ Report PR-AUC, ROC-AUC, precision, recall, F1, event-level recall, false alerts 
 5. Export and benchmark ONNX/INT8 on the laptop CPU.
 6. Add the FastAPI backend and minimal dashboard.
 
-See `docs/module_01_02_implementation_plan.md` for the first implementation milestone.
+See `PROJECT_PLAN.md` for the full project plan (architecture, datasets, storage, phases).
 
 ## Status
 
@@ -91,7 +91,34 @@ See `docs/module_01_02_implementation_plan.md` for the first implementation mile
 - Benchmarks (`docs/module_02_benchmark_notes.md`): ~15-24 FPS on CPU, ~34 FPS average across the full batch on GPU (RTX 4050 laptop GPU).
 - Tests: `tests/test_tracker.py`.
 
-Next: Module 3 — pose normalization and feature extraction.
+### Module 3 — Pose normalization and feature engineering (done)
+
+- `features/normalization.py`: Mid-hip origin anchoring and torso scale normalization.
+- `features/kinematics.py`: Joint angle estimation (elbows, shoulders, hips) and 1st/2nd order wrist kinematics (velocity, acceleration).
+- `features/spatial_interaction.py`: 16 spatial interactions (hand-to-hip, hand-to-head, hand-to-hand, shelf interaction distance/dwell).
+- `features/sequence_builder.py` + `pipeline/extract_features.py`: 77-dimensional feature vectors assembled across 32-frame sliding windows (stride: 8 frames) with strict clip-level split isolation.
+  - Train set: 2,979 windows (`[2979, 32, 77]`)
+  - Validation set: 660 windows (`[660, 32, 77]`)
+  - Test set: 621 windows (`[621, 32, 77]`)
+- Tests: `tests/test_features.py`, `tests/test_normalization.py`, `tests/test_sequence_builder.py`.
+
+### Module 4 — Temporal Sequence Classifier & Training (done)
+
+- `model/network.py`: PyTorch `ShopliftingGRU` and `ShopliftingLSTM` sequence models.
+- `model/train.py` + `pipeline/train_model.py`: Weighted BCE loss, Adam optimizer, `ReduceLROnPlateau` scheduler, and validation checkpointing.
+- Saved best model checkpoint: `artifacts/models/best_model.pt`.
+- Test metrics (threshold chosen on validation only; weak clip-level labels, single small split, so treat as a baseline, not a result):
+  - ROC-AUC 0.758, PR-AUC 0.823, precision 0.739, recall 0.677, F1 0.707, clip event recall 14/14
+  - A logistic/random-forest baseline scores higher on this split (test ROC-AUC ~0.81), so model complexity is unproven; see `PROJECT_PLAN.md` Phase 0.
+- Early stopping (patience 8) and validation-only threshold selection are implemented.
+- Tests: `tests/test_model.py`.
+
+### Module 5 — Alert policy, live inference, ONNX, dashboard (NOT DONE)
+
+- `pipeline/live_demo.py` currently runs pose + tracking only; it does not yet run the classifier.
+- Smoothing/cooldown, ONNX INT8 export, FastAPI backend and dashboard are still to be built.
+
+
 
 ## How to run
 
@@ -102,6 +129,8 @@ Install once: `python -m pip install -r requirements.txt`
 - Extract for the whole dataset: `python -m pipeline.batch_extract`
 - Benchmark throughput: `python -m pipeline.benchmark <clip> ...`
 - Live demo window: `python -m pipeline.live_demo [--source <video-path-or-webcam-index>]`
+- Build sequence features: `python -m pipeline.extract_features`
+- Train/evaluate: `python -m pipeline.train_model --model-type gru|lstm|baseline`
 - Run tests: `python -m pytest tests/`
 
 All commands above read `configs/default.yaml` by default (target FPS, resize, detector/tracker settings, device); pass `--device cpu` to force CPU on a machine without a CUDA GPU.

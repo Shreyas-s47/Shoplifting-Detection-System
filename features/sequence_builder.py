@@ -100,7 +100,8 @@ def extract_features_for_track(
     l_wrist_acc_mag = np.linalg.norm(accs[:, LEFT_WRIST], axis=1, keepdims=True)
     r_wrist_acc_mag = np.linalg.norm(accs[:, RIGHT_WRIST], axis=1, keepdims=True)
 
-    kinematic_feats = np.hstack([l_wrist_vel_mag, r_wrist_vel_mag, l_wrist_acc_mag, r_wrist_acc_mag])  # (T, 4)
+    # log-compress: raw wrist acceleration spans 0..~3e4 and dominates recurrent models
+    kinematic_feats = np.log1p(np.hstack([l_wrist_vel_mag, r_wrist_vel_mag, l_wrist_acc_mag, r_wrist_acc_mag]))  # (T, 4)
     full_frame_feats = np.hstack([frame_features, kinematic_feats])  # (T, 77)
 
     # 3. Sliding window generation

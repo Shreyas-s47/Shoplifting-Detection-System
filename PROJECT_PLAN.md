@@ -318,6 +318,9 @@ tests/
 - 2026-10-14: Logistic/RF baseline beats the GRU on the current split, so model complexity is treated as unproven until Phase 0 CV.
 - 2026-10-14: Architecture changed from pose-only GRU to a 3-tier cascade (pose + hand-region visual + anomaly, gated VLM verifier).
 - 2026-10-14: MNNIT is a byte-identical copy of the Kaggle set; Kaggle manifest had 3 duplicate clips, now grouped by MD5 in splits. Honest single-split baseline (test, val-chosen threshold): logistic ROC-AUC 0.80, GRU 0.77, LSTM 0.77.
+- 2026-10-14: PoseLift test set (47 clips) == RetailS real-world test set (32/47 byte-identical, rest smoothed variants); treat as ONE held-out real-world set, never train on one and test on the other.
+- 2026-10-14: First cross-dataset results (logistic / random forest on aggregated windows, cluster-bootstrap 95% CI): RetailS staged+normals -> RetailS real ROC 0.51 / 0.60; Kaggle -> RetailS real 0.49 / 0.57; Kaggle -> Kaggle test 0.79 / 0.82; leave-one-camera-out (staged+normals) 0.53-0.90. Conclusion: the current features/models do NOT transfer across domains; within-Kaggle scores overstate real-world ability.
+- 2026-10-14: Fixed feature bugs: NaN joints in PoseLift handled as missing; wrist acceleration (max ~3e4) is now log1p-compressed.
 - 2026-10-14: Hardware is no longer restricted to CPU; real-time on a single GPU is the target.
 
 ---

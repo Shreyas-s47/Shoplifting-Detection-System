@@ -1,0 +1,63 @@
+{
+  "n": 83,
+  "pos": 25,
+  "prefilter_ms_per_window": 486.26853184527664,
+  "prefilter_roc": {
+    "combined": 0.699655172413793,
+    "near": 0.6348275862068965,
+    "motion": 0.6720689655172414
+  },
+  "vlm_alone_roc": 0.7555172413793103,
+  "cascade": [
+    {
+      "pass_rate": 0.2,
+      "recall_kept": 0.32,
+      "roc": 0.5865517241379311,
+      "pred": {},
+      "recall_at_0": 0.12,
+      "false_alarm_at_0": 0.017241379310344827,
+      "precision_at_0": 0.75,
+      "vlm_calls_per_min_per_camera": 2.4000000000000004
+    },
+    {
+      "pass_rate": 0.3,
+      "recall_kept": 0.48,
+      "roc": 0.6272413793103448,
+      "pred": {},
+      "recall_at_0": 0.12,
+      "false_alarm_at_0": 0.034482758620689655,
+      "precision_at_0": 0.6,
+      "vlm_calls_per_min_per_camera": 3.5999999999999996
+    },
+    {
+      "pass_rate": 0.5,
+      "recall_kept": 0.68,
+      "roc": 0.670344827586207,
+      "pred": {},
+      "recall_at_0": 0.2,
+      "false_alarm_at_0": 0.034482758620689655,
+      "precision_at_0": 0.7142857142857143,
+      "vlm_calls_per_min_per_camera": 6.0
+    },
+    {
+      "pass_rate": 0.7,
+      "recall_kept": 0.88,
+      "roc": 0.7462068965517241,
+      "pred": {},
+      "recall_at_0": 0.24,
+      "false_alarm_at_0": 0.034482758620689655,
+      "precision_at_0": 0.75,
+      "vlm_calls_per_min_per_camera": 8.399999999999999
+    },
+    {
+      "pass_rate": 1.0,
+      "recall_kept": 1.0,
+      "roc": 0.7555172413793103,
+      "pred": {},
+      "recall_at_0": 0.28,
+      "false_alarm_at_0": 0.05172413793103448,
+      "precision_at_0": 0.7,
+      "vlm_calls_per_min_per_camera": 12.0
+    }
+  ]
+}

@@ -29,28 +29,70 @@ from eval.cross_dataset import bootstrap_ci
 MODEL_ID = "Qwen/Qwen3-VL-2B-Instruct"
 N_FRAMES = 8
 FRAME_SIZE = (448, 336)  # (w, h)
-PROMPT = (
-    "These {n} frames, in time order, come from a store CCTV camera. "
-    "Is a person concealing or stealing merchandise (for example hiding an item in a bag, "
-    "pocket or under clothing instead of paying)? Answer with only Yes or No."
-)
+PROMPTS = {
+    "base": (
+        "These {n} frames, in time order, come from a store CCTV camera. "
+        "Is a person concealing or stealing merchandise (for example hiding an item in a bag, "
+        "pocket or under clothing instead of paying)? Answer with only Yes or No."
+    ),
+    "stages": (
+        "These {n} frames, in time order, come from a store CCTV camera. Look carefully at the "
+        "customers' hands. Shoplifting looks like: a person picks up a product from a shelf or "
+        "display, then puts it into their own bag, pocket, jacket or waistband instead of a "
+        "basket or trolley, often glancing around. Normal shopping looks like: browsing, "
+        "looking at products, putting items back, or placing them in a store basket or cart. "
+        "Does the footage show shoplifting? Answer with only Yes or No."
+    ),
+}
+PROMPT = PROMPTS["base"]
 
 
-def read_frames(path: str, start: int, end: int, n: int = N_FRAMES) -> list[Image.Image]:
+_DETECTOR = None
+
+
+def _person_union_box(bgr_frames: list[np.ndarray], pad: float = 0.25):
+    """Union box of all confident people across a few frames, padded; None if nobody found."""
+    global _DETECTOR
+    if _DETECTOR is None:
+        from ultralytics import YOLO
+
+        _DETECTOR = YOLO("yolov8n-pose.pt")
+    boxes = []
+    for f in bgr_frames:
+        r = _DETECTOR.predict(f, classes=[0], conf=0.25, verbose=False)[0]
+        boxes += r.boxes.xyxy.cpu().numpy().tolist()
+    if not boxes:
+        return None
+    b = np.array(boxes)
+    x1, y1, x2, y2 = b[:, 0].min(), b[:, 1].min(), b[:, 2].max(), b[:, 3].max()
+    w, h = x2 - x1, y2 - y1
+    H, W = bgr_frames[0].shape[:2]
+    return (max(0, x1 - pad * w), max(0, y1 - pad * h), min(W, x2 + pad * w), min(H, y2 + pad * h))
+
+
+def read_frames(path: str, start: int, end: int, n: int = N_FRAMES, size=None, crop: bool = False) -> list[Image.Image]:
+    size = size or FRAME_SIZE
     cap = cv2.VideoCapture(path)
     total = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
     end = min(end, total - 1)
     idx = np.linspace(start, max(start, end), n).astype(int)
-    frames = []
+    raw = []
     for i in idx:
         cap.set(cv2.CAP_PROP_POS_FRAMES, int(i))
         ok, bgr = cap.read()
-        if not ok:
-            continue
-        rgb = cv2.cvtColor(cv2.resize(bgr, FRAME_SIZE, interpolation=cv2.INTER_CUBIC), cv2.COLOR_BGR2RGB)
-        frames.append(Image.fromarray(rgb))
+        if ok:
+            raw.append(bgr)
     cap.release()
-    return frames
+    if crop and raw:
+        box = _person_union_box(raw[:: max(1, len(raw) // 4)])
+        if box is not None:
+            x1, y1, x2, y2 = (int(v) for v in box)
+            if x2 - x1 > 20 and y2 - y1 > 20:
+                raw = [f[y1:y2, x1:x2] for f in raw]
+    return [
+        Image.fromarray(cv2.cvtColor(cv2.resize(f, size, interpolation=cv2.INTER_CUBIC), cv2.COLOR_BGR2RGB))
+        for f in raw
+    ]
 
 
 def ucf_samples(root: Path, ann_path: Path, win: int = 150, max_neg: int = 3) -> list[dict]:
@@ -89,12 +131,19 @@ def kaggle_samples(root: Path) -> list[dict]:
     return out
 
 
-def load_model():
+def load_model(model_id: str = MODEL_ID, quant: str = "fp16"):
     from transformers import AutoProcessor, Qwen3VLForConditionalGeneration
 
-    processor = AutoProcessor.from_pretrained(MODEL_ID)
+    processor = AutoProcessor.from_pretrained(model_id)
+    kwargs = {}
+    if quant == "4bit":
+        from transformers import BitsAndBytesConfig
+
+        kwargs["quantization_config"] = BitsAndBytesConfig(
+            load_in_4bit=True, bnb_4bit_compute_dtype=torch.float16, bnb_4bit_quant_type="nf4"
+        )
     model = Qwen3VLForConditionalGeneration.from_pretrained(
-        MODEL_ID, torch_dtype=torch.float16, device_map="cuda" if torch.cuda.is_available() else "cpu"
+        model_id, torch_dtype=torch.float16, device_map="cuda" if torch.cuda.is_available() else "cpu", **kwargs
     ).eval()
     tok = processor.tokenizer
     yes = [tok.encode(t, add_special_tokens=False)[0] for t in ("Yes", "yes", " Yes")]
@@ -103,8 +152,8 @@ def load_model():
 
 
 @torch.no_grad()
-def vlm_score(processor, model, yes_ids, no_ids, frames: list[Image.Image], explain: bool = False) -> dict:
-    content = [{"type": "image"} for _ in frames] + [{"type": "text", "text": PROMPT.format(n=len(frames))}]
+def vlm_score(processor, model, yes_ids, no_ids, frames: list[Image.Image], prompt: str = PROMPT) -> dict:
+    content = [{"type": "image"} for _ in frames] + [{"type": "text", "text": prompt.format(n=len(frames))}]
     text = processor.apply_chat_template([{"role": "user", "content": content}], add_generation_prompt=True, tokenize=False)
     inputs = processor(text=[text], images=frames, return_tensors="pt").to(model.device)
     logits = model(**inputs).logits[0, -1].float()
@@ -119,7 +168,14 @@ def main() -> None:
     ap.add_argument("--set", choices=["ucf", "kaggle"], required=True)
     ap.add_argument("--limit", type=int, default=None, help="evaluate only the first N samples (smoke test)")
     ap.add_argument("--out", default=None)
+    ap.add_argument("--frames", type=int, default=N_FRAMES)
+    ap.add_argument("--prompt", choices=list(PROMPTS), default="base")
+    ap.add_argument("--size", default="448x336", help="WxH each frame is resized to")
+    ap.add_argument("--crop", action="store_true", help="crop to the union box of detected people")
+    ap.add_argument("--model", default=MODEL_ID)
+    ap.add_argument("--quant", choices=["fp16", "4bit"], default="fp16")
     a = ap.parse_args()
+    size = tuple(int(v) for v in a.size.split("x"))
 
     if a.set == "ucf":
         samples = ucf_samples(Path("data/external/ucf_shoplifting"), Path("data/Temporal_Anomaly_Annotation_for_Testing_Videos.txt"))
@@ -134,7 +190,7 @@ def main() -> None:
     done = {}
     if out_path.exists():
         done = {(r["clip"], r["start"]): r for r in json.loads(out_path.read_text())["rows"]}
-    processor, model, yes_ids, no_ids = load_model()
+    processor, model, yes_ids, no_ids = load_model(a.model, a.quant)
 
     rows, t0 = [], time.time()
     for i, s in enumerate(samples, 1):
@@ -142,10 +198,10 @@ def main() -> None:
         if key in done:
             rows.append(done[key])
             continue
-        frames = read_frames(s["path"], s["start"], s["end"])
+        frames = read_frames(s["path"], s["start"], s["end"], a.frames, size, a.crop)
         if len(frames) < 4:
             continue
-        r = vlm_score(processor, model, yes_ids, no_ids, frames)
+        r = vlm_score(processor, model, yes_ids, no_ids, frames, PROMPTS[a.prompt])
         rows.append({**{k: s[k] for k in ("clip", "start", "end", "label")}, **r})
         if i % 20 == 0:
             print(f"  {i}/{len(samples)}  {(time.time() - t0) / i:.2f}s/sample", flush=True)
@@ -153,7 +209,8 @@ def main() -> None:
     y = np.array([r["label"] for r in rows])
     sc = np.array([r["score"] for r in rows])
     clips = np.array([r["clip"] for r in rows])
-    res = {"model": MODEL_ID, "n": len(rows), "pos": int(y.sum())}
+    res = {"model": a.model, "quant": a.quant, "frames": a.frames, "prompt": a.prompt, "size": a.size, "crop": a.crop,
+           "n": len(rows), "pos": int(y.sum())}
     if len(np.unique(y)) > 1:
         res.update(roc_auc=float(roc_auc_score(y, sc)), pr_auc=float(average_precision_score(y, sc)))
         res.update(bootstrap_ci(y, sc, clips))

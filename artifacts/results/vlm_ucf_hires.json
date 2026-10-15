@@ -1,0 +1,690 @@
+{
+ "summary": {
+  "model": "Qwen/Qwen3-VL-2B-Instruct",
+  "frames": 8,
+  "prompt": "base",
+  "size": "640x480",
+  "crop": false,
+  "n": 83,
+  "pos": 25,
+  "roc_auc": 0.6703448275862068,
+  "pr_auc": 0.5089634523971727,
+  "roc_ci": [
+   0.574547847985348,
+   0.7653361969508439
+  ],
+  "pr_ci": [
+   0.4071553329978337,
+   0.6621957847500439
+  ],
+  "precision_at_0": 0.5,
+  "recall_at_0": 0.08,
+  "false_alarm_rate_at_0": 0.034482758620689655
+ },
+ "rows": [
+  {
+   "clip": "Shoplifting001_x264.mp4",
+   "start": 1700,
+   "end": 1850,
+   "label": 1,
+   "score": -1.5468721389770508,
+   "p_yes": 0.17553848768381033
+  },
+  {
+   "clip": "Shoplifting001_x264.mp4",
+   "start": 0,
+   "end": 150,
+   "label": 0,
+   "score": -4.03124962374568,
+   "p_yes": 0.017442491184545033
+  },
+  {
+   "clip": "Shoplifting001_x264.mp4",
+   "start": 2400,
+   "end": 2550,
+   "label": 0,
+   "score": -3.2812491804361343,
+   "p_yes": 0.036220084474454975
+  },
+  {
+   "clip": "Shoplifting001_x264.mp4",
+   "start": 4050,
+   "end": 4200,
+   "label": 0,
+   "score": -3.140623990446329,
+   "p_yes": 0.04146231283427385
+  },
+  {
+   "clip": "Shoplifting004_x264.mp4",
+   "start": 3475,
+   "end": 3625,
+   "label": 1,
+   "score": -0.12499403953552246,
+   "p_yes": 0.46879211093699796
+  },
+  {
+   "clip": "Shoplifting004_x264.mp4",
+   "start": 0,
+   "end": 150,
+   "label": 0,
+   "score": -3.874999390915036,
+   "p_yes": 0.02033236547499448
+  },
+  {
+   "clip": "Shoplifting004_x264.mp4",
+   "start": 1650,
+   "end": 1800,
+   "label": 0,
+   "score": 0.281255841255188,
+   "p_yes": 0.5698540832255907
+  },
+  {
+   "clip": "Shoplifting004_x264.mp4",
+   "start": 6450,
+   "end": 6600,
+   "label": 0,
+   "score": 0.09375596046447754,
+   "p_yes": 0.5234218357828452
+  },
+  {
+   "clip": "Shoplifting005_x264.mp4",
+   "start": 750,
+   "end": 900,
+   "label": 1,
+   "score": -2.015623450279236,
+   "p_yes": 0.11757229432747049
+  },
+  {
+   "clip": "Shoplifting005_x264.mp4",
+   "start": 0,
+   "end": 150,
+   "label": 0,
+   "score": -5.093749941326678,
+   "p_yes": 0.0060975625481580606
+  },
+  {
+   "clip": "Shoplifting005_x264.mp4",
+   "start": 1200,
+   "end": 1350,
+   "label": 0,
+   "score": -3.437499590218067,
+   "p_yes": 0.031143842899496767
+  },
+  {
+   "clip": "Shoplifting005_x264.mp4",
+   "start": 1800,
+   "end": 1950,
+   "label": 0,
+   "score": -3.218749225139618,
+   "p_yes": 0.03846622067774222
+  },
+  {
+   "clip": "Shoplifting007_x264.mp4",
+   "start": 580,
+   "end": 730,
+   "label": 1,
+   "score": -3.218749601393938,
+   "p_yes": 0.038466206761387685
+  },
+  {
+   "clip": "Shoplifting007_x264.mp4",
+   "start": 4700,
+   "end": 4850,
+   "label": 1,
+   "score": -4.031249709427357,
+   "p_yes": 0.017442489716111034
+  },
+  {
+   "clip": "Shoplifting007_x264.mp4",
+   "start": 0,
+   "end": 150,
+   "label": 0,
+   "score": -3.4687494225800037,
+   "p_yes": 0.03021460398676632
+  },
+  {
+   "clip": "Shoplifting007_x264.mp4",
+   "start": 2400,
+   "end": 2550,
+   "label": 0,
+   "score": -2.4687488675117493,
+   "p_yes": 0.07807824666371983
+  },
+  {
+   "clip": "Shoplifting007_x264.mp4",
+   "start": 4200,
+   "end": 4350,
+   "label": 0,
+   "score": -3.2187493182718754,
+   "p_yes": 0.03846621723309956
+  },
+  {
+   "clip": "Shoplifting010_x264.mp4",
+   "start": 760,
+   "end": 910,
+   "label": 1,
+   "score": -0.624996155500412,
+   "p_yes": 0.34864600838841986
+  },
+  {
+   "clip": "Shoplifting010_x264.mp4",
+   "start": 1685,
+   "end": 1835,
+   "label": 1,
+   "score": -0.9687467813491821,
+   "p_yes": 0.2751303657299835
+  },
+  {
+   "clip": "Shoplifting010_x264.mp4",
+   "start": 0,
+   "end": 150,
+   "label": 0,
+   "score": -0.6874956488609314,
+   "p_yes": 0.33459040998864437
+  },
+  {
+   "clip": "Shoplifting010_x264.mp4",
+   "start": 1200,
+   "end": 1350,
+   "label": 0,
+   "score": -1.374997153878212,
+   "p_yes": 0.20181368072728742
+  },
+  {
+   "clip": "Shoplifting010_x264.mp4",
+   "start": 2550,
+   "end": 2700,
+   "label": 0,
+   "score": -1.0312468111515045,
+   "p_yes": 0.2628424552303318
+  },
+  {
+   "clip": "Shoplifting015_x264.mp4",
+   "start": 2010,
+   "end": 2160,
+   "label": 1,
+   "score": -4.312499778345227,
+   "p_yes": 0.013222824644452222
+  },
+  {
+   "clip": "Shoplifting015_x264.mp4",
+   "start": 0,
+   "end": 150,
+   "label": 0,
+   "score": -4.968750020954758,
+   "p_yes": 0.006903837927552389
+  },
+  {
+   "clip": "Shoplifting015_x264.mp4",
+   "start": 750,
+   "end": 900,
+   "label": 0,
+   "score": -4.499999669380486,
+   "p_yes": 0.01098694622318135
+  },
+  {
+   "clip": "Shoplifting015_x264.mp4",
+   "start": 1650,
+   "end": 1800,
+   "label": 0,
+   "score": -2.7812492176890373,
+   "p_yes": 0.05834588359311463
+  },
+  {
+   "clip": "Shoplifting016_x264.mp4",
+   "start": 630,
+   "end": 720,
+   "label": 1,
+   "score": 0.01562976837158203,
+   "p_yes": 0.5039073625491972
+  },
+  {
+   "clip": "Shoplifting016_x264.mp4",
+   "start": 0,
+   "end": 150,
+   "label": 0,
+   "score": -0.5312446653842926,
+   "p_yes": 0.37022663640771764
+  },
+  {
+   "clip": "Shoplifting016_x264.mp4",
+   "start": 300,
+   "end": 450,
+   "label": 0,
+   "score": -1.5624972879886627,
+   "p_yes": 0.1732885944507976
+  },
+  {
+   "clip": "Shoplifting016_x264.mp4",
+   "start": 1200,
+   "end": 1350,
+   "label": 0,
+   "score": -3.687499601393938,
+   "p_yes": 0.024423099551537288
+  },
+  {
+   "clip": "Shoplifting017_x264.mp4",
+   "start": 360,
+   "end": 420,
+   "label": 1,
+   "score": 1.1875035166740417,
+   "p_yes": 0.7662942728784204
+  },
+  {
+   "clip": "Shoplifting017_x264.mp4",
+   "start": 0,
+   "end": 150,
+   "label": 0,
+   "score": -1.4999964535236359,
+   "p_yes": 0.18242605275131912
+  },
+  {
+   "clip": "Shoplifting020_x264.mp4",
+   "start": 2340,
+   "end": 2460,
+   "label": 1,
+   "score": -1.0156199634075165,
+   "p_yes": 0.2658814561836272
+  },
+  {
+   "clip": "Shoplifting020_x264.mp4",
+   "start": 0,
+   "end": 150,
+   "label": 0,
+   "score": -1.9843727201223373,
+   "p_yes": 0.1208534747225034
+  },
+  {
+   "clip": "Shoplifting020_x264.mp4",
+   "start": 3000,
+   "end": 3150,
+   "label": 0,
+   "score": -1.3593711256980896,
+   "p_yes": 0.2043425298459331
+  },
+  {
+   "clip": "Shoplifting020_x264.mp4",
+   "start": 5550,
+   "end": 5700,
+   "label": 0,
+   "score": -2.328123204410076,
+   "p_yes": 0.08882043771955855
+  },
+  {
+   "clip": "Shoplifting021_x264.mp4",
+   "start": 2070,
+   "end": 2220,
+   "label": 1,
+   "score": -0.9843703210353851,
+   "p_yes": 0.27202547765724766
+  },
+  {
+   "clip": "Shoplifting021_x264.mp4",
+   "start": 0,
+   "end": 150,
+   "label": 0,
+   "score": -0.7031196057796478,
+   "p_yes": 0.33112093433907785
+  },
+  {
+   "clip": "Shoplifting021_x264.mp4",
+   "start": 1350,
+   "end": 1500,
+   "label": 0,
+   "score": -1.4687466323375702,
+   "p_yes": 0.18713319443170867
+  },
+  {
+   "clip": "Shoplifting021_x264.mp4",
+   "start": 3300,
+   "end": 3450,
+   "label": 0,
+   "score": -1.749997466802597,
+   "p_yes": 0.1480475175422
+  },
+  {
+   "clip": "Shoplifting022_x264.mp4",
+   "start": 270,
+   "end": 420,
+   "label": 1,
+   "score": -0.015621542930603027,
+   "p_yes": 0.49609469368553183
+  },
+  {
+   "clip": "Shoplifting022_x264.mp4",
+   "start": 1440,
+   "end": 1560,
+   "label": 1,
+   "score": -1.8437478691339493,
+   "p_yes": 0.13660864135468717
+  },
+  {
+   "clip": "Shoplifting022_x264.mp4",
+   "start": 600,
+   "end": 750,
+   "label": 0,
+   "score": -3.656249564141035,
+   "p_yes": 0.02517885239870467
+  },
+  {
+   "clip": "Shoplifting022_x264.mp4",
+   "start": 900,
+   "end": 1050,
+   "label": 0,
+   "score": -2.73437387496233,
+   "p_yes": 0.06097524528151272
+  },
+  {
+   "clip": "Shoplifting022_x264.mp4",
+   "start": 1950,
+   "end": 2100,
+   "label": 0,
+   "score": -3.81249962747097,
+   "p_yes": 0.021615340640934018
+  },
+  {
+   "clip": "Shoplifting027_x264.mp4",
+   "start": 1080,
+   "end": 1160,
+   "label": 1,
+   "score": -3.656248826533556,
+   "p_yes": 0.025178870503196442
+  },
+  {
+   "clip": "Shoplifting027_x264.mp4",
+   "start": 1515,
+   "end": 1665,
+   "label": 1,
+   "score": -3.3593738712370396,
+   "p_yes": 0.03358954229118078
+  },
+  {
+   "clip": "Shoplifting027_x264.mp4",
+   "start": 0,
+   "end": 150,
+   "label": 0,
+   "score": -2.0468700230121613,
+   "p_yes": 0.11436903029374779
+  },
+  {
+   "clip": "Shoplifting027_x264.mp4",
+   "start": 300,
+   "end": 450,
+   "label": 0,
+   "score": -4.281249729916453,
+   "p_yes": 0.013636838914289571
+  },
+  {
+   "clip": "Shoplifting027_x264.mp4",
+   "start": 750,
+   "end": 900,
+   "label": 0,
+   "score": -4.249999502673745,
+   "p_yes": 0.014063633939094133
+  },
+  {
+   "clip": "Shoplifting028_x264.mp4",
+   "start": 630,
+   "end": 780,
+   "label": 1,
+   "score": -2.5312483087182045,
+   "p_yes": 0.07369638516170256
+  },
+  {
+   "clip": "Shoplifting028_x264.mp4",
+   "start": 0,
+   "end": 150,
+   "label": 0,
+   "score": -2.4531229585409164,
+   "p_yes": 0.07921047300511133
+  },
+  {
+   "clip": "Shoplifting028_x264.mp4",
+   "start": 150,
+   "end": 300,
+   "label": 0,
+   "score": -2.234372243285179,
+   "p_yes": 0.09670603410585708
+  },
+  {
+   "clip": "Shoplifting028_x264.mp4",
+   "start": 1200,
+   "end": 1350,
+   "label": 0,
+   "score": -5.1875,
+   "p_yes": 0.005554924703691102
+  },
+  {
+   "clip": "Shoplifting029_x264.mp4",
+   "start": 1170,
+   "end": 1320,
+   "label": 1,
+   "score": -0.7499956488609314,
+   "p_yes": 0.32082224891676636
+  },
+  {
+   "clip": "Shoplifting029_x264.mp4",
+   "start": 0,
+   "end": 150,
+   "label": 0,
+   "score": -2.4374977573752403,
+   "p_yes": 0.08035763455266028
+  },
+  {
+   "clip": "Shoplifting029_x264.mp4",
+   "start": 450,
+   "end": 600,
+   "label": 0,
+   "score": -2.296873189508915,
+   "p_yes": 0.09138225339491796
+  },
+  {
+   "clip": "Shoplifting029_x264.mp4",
+   "start": 1950,
+   "end": 2100,
+   "label": 0,
+   "score": -4.843749614432454,
+   "p_yes": 0.007815891779288658
+  },
+  {
+   "clip": "Shoplifting031_x264.mp4",
+   "start": 150,
+   "end": 300,
+   "label": 1,
+   "score": -1.984372541308403,
+   "p_yes": 0.12085349372111191
+  },
+  {
+   "clip": "Shoplifting033_x264.mp4",
+   "start": 630,
+   "end": 750,
+   "label": 1,
+   "score": -5.906249766470864,
+   "p_yes": 0.002714986101312082
+  },
+  {
+   "clip": "Shoplifting033_x264.mp4",
+   "start": 0,
+   "end": 150,
+   "label": 0,
+   "score": -5.718749897554517,
+   "p_yes": 0.003273065304884877
+  },
+  {
+   "clip": "Shoplifting033_x264.mp4",
+   "start": 150,
+   "end": 300,
+   "label": 0,
+   "score": -5.000000192783773,
+   "p_yes": 0.00669284964264753
+  },
+  {
+   "clip": "Shoplifting033_x264.mp4",
+   "start": 300,
+   "end": 450,
+   "label": 0,
+   "score": -6.125000005355105,
+   "p_yes": 0.0021827164336820186
+  },
+  {
+   "clip": "Shoplifting034_x264.mp4",
+   "start": 7350,
+   "end": 7470,
+   "label": 1,
+   "score": -2.7499975971877575,
+   "p_yes": 0.06008678587596311
+  },
+  {
+   "clip": "Shoplifting034_x264.mp4",
+   "start": 0,
+   "end": 150,
+   "label": 0,
+   "score": -4.5937496377155185,
+   "p_yes": 0.010013574214608172
+  },
+  {
+   "clip": "Shoplifting034_x264.mp4",
+   "start": 5550,
+   "end": 5700,
+   "label": 0,
+   "score": -2.7499984987080097,
+   "p_yes": 0.06008673496139734
+  },
+  {
+   "clip": "Shoplifting034_x264.mp4",
+   "start": 11700,
+   "end": 11850,
+   "label": 0,
+   "score": -4.53125003632158,
+   "p_yes": 0.01065251045693177
+  },
+  {
+   "clip": "Shoplifting037_x264.mp4",
+   "start": 1140,
+   "end": 1200,
+   "label": 1,
+   "score": -0.6249952912330627,
+   "p_yes": 0.3486462046566198
+  },
+  {
+   "clip": "Shoplifting037_x264.mp4",
+   "start": 0,
+   "end": 150,
+   "label": 0,
+   "score": -1.1406219005584717,
+   "p_yes": 0.24220619760370357
+  },
+  {
+   "clip": "Shoplifting037_x264.mp4",
+   "start": 300,
+   "end": 450,
+   "label": 0,
+   "score": -2.6562484353780746,
+   "p_yes": 0.06560493337177711
+  },
+  {
+   "clip": "Shoplifting037_x264.mp4",
+   "start": 750,
+   "end": 900,
+   "label": 0,
+   "score": -2.1093727201223373,
+   "p_yes": 0.10818917453422192
+  },
+  {
+   "clip": "Shoplifting039_x264.mp4",
+   "start": 2190,
+   "end": 2340,
+   "label": 1,
+   "score": -4.656249870546162,
+   "p_yes": 0.009412590794636546
+  },
+  {
+   "clip": "Shoplifting039_x264.mp4",
+   "start": 0,
+   "end": 150,
+   "label": 0,
+   "score": -3.749999523162842,
+   "p_yes": 0.0229773806147411
+  },
+  {
+   "clip": "Shoplifting039_x264.mp4",
+   "start": 900,
+   "end": 1050,
+   "label": 0,
+   "score": -3.781249202787876,
+   "p_yes": 0.02228620291009483
+  },
+  {
+   "clip": "Shoplifting039_x264.mp4",
+   "start": 2550,
+   "end": 2700,
+   "label": 0,
+   "score": -4.749999852851033,
+   "p_yes": 0.008577486665053964
+  },
+  {
+   "clip": "Shoplifting044_x264.mp4",
+   "start": 11085,
+   "end": 11235,
+   "label": 1,
+   "score": -0.9218717515468597,
+   "p_yes": 0.2845766655776922
+  },
+  {
+   "clip": "Shoplifting044_x264.mp4",
+   "start": 0,
+   "end": 150,
+   "label": 0,
+   "score": -1.8124964237213135,
+   "p_yes": 0.14033668094000343
+  },
+  {
+   "clip": "Shoplifting044_x264.mp4",
+   "start": 6750,
+   "end": 6900,
+   "label": 0,
+   "score": -1.171871393918991,
+   "p_yes": 0.23651688761911527
+  },
+  {
+   "clip": "Shoplifting044_x264.mp4",
+   "start": 14400,
+   "end": 14550,
+   "label": 0,
+   "score": -2.8124989606440067,
+   "p_yes": 0.05665248085422696
+  },
+  {
+   "clip": "Shoplifting049_x264.mp4",
+   "start": 1110,
+   "end": 1260,
+   "label": 1,
+   "score": -2.5468740090727806,
+   "p_yes": 0.07263677311028241
+  },
+  {
+   "clip": "Shoplifting049_x264.mp4",
+   "start": 0,
+   "end": 150,
+   "label": 0,
+   "score": -1.9687479585409164,
+   "p_yes": 0.12252343199819708
+  },
+  {
+   "clip": "Shoplifting049_x264.mp4",
+   "start": 450,
+   "end": 600,
+   "label": 0,
+   "score": -2.7812488228082657,
+   "p_yes": 0.05834590528851619
+  },
+  {
+   "clip": "Shoplifting049_x264.mp4",
+   "start": 1950,
+   "end": 2100,
+   "label": 0,
+   "score": -4.093749683350325,
+   "p_yes": 0.016403037624981166
+  }
+ ]
+}

@@ -323,6 +323,7 @@ tests/
 - 2026-10-14: Fixed feature bugs: NaN joints in PoseLift handled as missing; wrist acceleration (max ~3e4) is now log1p-compressed.
 - 2026-10-14: Normal-behaviour GRU autoencoder (trained on 22.8k normal windows, 25 epochs, GPU ~40 s) is at chance on real incidents: ROC 0.49 [0.34-0.65] raw, 0.49 camera-calibrated; staged+held-out normals ROC 0.56. Reconstruction error does not capture concealment. Published STG-NF reaches ~67 AUROC (frame-level) on PoseLift, so pose-only anomaly scoring is a hard ceiling, not just a tuning gap.
 - 2026-10-14: Constraint: RetailS/PoseLift ship pose only (no pixels). Visual hand-region and VLM tiers cannot be trained or tested on them; they must be validated on video datasets (Kaggle/MNNIT clips, UCF-Crime Shoplifting real CCTV, Simuletic).
+- 2026-10-15: UCF-Crime Shoplifting (50 videos, 2.7 GB) fetched via ranged reads from Part 4 only. Zero-shot Qwen3-VL-2B-Instruct (fp16, 8 frames @448x336, score = logit Yes - logit No, ~1.1 s/sample on RTX 4050): UCF test windows (event vs non-event, 21 videos, 83 windows) ROC 0.66 [0.56-0.76], PR 0.44; Kaggle clips (182) ROC 0.81 [0.74-0.88], PR 0.84. At the raw threshold 0 it almost never says Yes (recall 0.04 on UCF), so it needs score calibration/threshold. Takeaway: a 2B VLM with no training matches the trained pose models on staged clips and is the only approach so far above chance on real CCTV, but is weak on real footage.
 - 2026-10-14: Hardware is no longer restricted to CPU; real-time on a single GPU is the target.
 
 ---

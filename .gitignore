@@ -7,6 +7,7 @@ data/normal/
 data/shoplifting/
 artifacts/*
 !artifacts/models/
+!artifacts/results/
 *.onnx
 *.pt
 !artifacts/models/best_model.pt
